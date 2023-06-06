@@ -1,60 +1,46 @@
 import "@logseq/libs";
-
-import React from "react";
-import * as ReactDOM from "react-dom/client";
-import App from "./App";
-import "./index.css";
-
-import { logseq as PL } from "../package.json";
-
-// @ts-expect-error
-const css = (t, ...args) => String.raw(t, ...args);
-
-const pluginId = PL.id;
+import { Gitlab } from "@gitbeaker/rest";
+import { settings } from './settings';
+import { ExpandedUserSchema } from "@gitbeaker/rest";
 
 function main() {
-  console.info(`#${pluginId}: MAIN`);
-  const root = ReactDOM.createRoot(document.getElementById("app")!);
+  logseq.UI.showMsg(`Hello from Ben`)
 
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+  logseq.useSettingsSchema(settings);
 
-  function createModel() {
-    return {
-      show() {
-        logseq.showMainUI();
-      },
-    };
-  }
-
-  logseq.provideModel(createModel());
-  logseq.setMainUIInlineStyle({
-    zIndex: 11,
-  });
-
-  const openIconName = "template-plugin-open";
-
-  logseq.provideStyle(css`
-    .${openIconName} {
-      opacity: 0.55;
-      font-size: 20px;
-      margin-top: 4px;
-    }
-
-    .${openIconName}:hover {
-      opacity: 0.9;
-    }
-  `);
-
-  logseq.App.registerUIItem("toolbar", {
-    key: openIconName,
-    template: `
-      <div data-on-click="show" class="${openIconName}">⚙️</div>
-    `,
-  });
+  logseq.Editor.registerSlashCommand('Update Gitlab Entry', (_) => { return updateGitlabEntry();})
 }
+
+async function updateGitlabEntry() {
+  try {
+    const glApi = new Gitlab({
+      host: logseq.settings?.host,
+      token: logseq.settings?.token,
+    });
+    const currentGlUser:ExpandedUserSchema = await glApi.Users.showCurrentUser()
+    console.log(currentGlUser)
+    const currentBlock = await logseq.Editor.getCurrentBlock();
+
+    const value = currentBlock?.content;
+    const uuid = currentBlock?.uuid;
+    const currentPage = await logseq.Editor.getCurrentPage();
+
+    console.log(currentPage?.journalDay)
+    const followedUsers = await glApi.Users.allFollowing(currentGlUser.id)
+    console.log(followedUsers)
+    const firstFollowedUsersEvents = await glApi.Events.all({
+      userId: followedUsers[5].id,
+      before: "2023-06-07",
+      after: "2023-06-05",
+    })
+    console.log(firstFollowedUsersEvents)
+  }
+  catch (e) {
+    if (e instanceof Error) {
+      console.error('logseq-plugin-gitlab-events', e.message)
+    }
+  }
+}
+
 
 logseq.ready(main).catch(console.error);
