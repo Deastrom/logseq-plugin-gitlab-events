@@ -2,11 +2,14 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@gitbeaker/rest':
-    specifier: ^38.11.0
-    version: 38.11.0
+    specifier: ^38.12.1
+    version: 38.12.1
   '@logseq/libs':
     specifier: ^0.0.14
     version: 0.0.14
+  moment:
+    specifier: ^2.29.4
+    version: 2.29.4
 
 devDependencies:
   '@semantic-release/changelog':
@@ -317,29 +320,29 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@gitbeaker/core@38.11.0:
-    resolution: {integrity: sha512-TBJG3/WsNg14p2cvD39viXnTkiAVkGpLvJ8h1/qhjfEOvgagxX3zXVD1KDlgeqQB6vRYtD2raHg1MfqiUdjO2g==}
+  /@gitbeaker/core@38.12.1:
+    resolution: {integrity: sha512-8XMVcBIdVAAoxn7JtqmZ2Ee8f+AZLcCPmqEmPFOXY2jPS84y/DERISg/+sbhhb18iRy+ZsZhpWgQ/r3CkYNJOQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
-      '@gitbeaker/requester-utils': 38.11.0
+      '@gitbeaker/requester-utils': 38.12.1
       qs: 6.11.2
       xcase: 2.0.1
     dev: false
 
-  /@gitbeaker/requester-utils@38.11.0:
-    resolution: {integrity: sha512-elXfapDlPKKuhv6M5vaolAj/etBljRab60FRJQd1GLYbP/OrJeGunlXAtSQc4rT2AYqzrfcFf7IpDw57BUP0DQ==}
+  /@gitbeaker/requester-utils@38.12.1:
+    resolution: {integrity: sha512-Rc/DgngS0YPN+AY1s9UnexKSy4Lh0bkQVAq9p7PRbRpXb33SlTeCg8eg/8+A/mrMcHgYmP0XhH8lkizyA5tBUQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
       qs: 6.11.2
       xcase: 2.0.1
     dev: false
 
-  /@gitbeaker/rest@38.11.0:
-    resolution: {integrity: sha512-eKfckzDmI3IE/20xe0za+OCYupkIRI+HRyICo7llDUWl86UDYRMzAI8/ApznCORLr7eK5rxaHYXvCNJ70hEDmw==}
+  /@gitbeaker/rest@38.12.1:
+    resolution: {integrity: sha512-9KMSDtJ/sIov+5pcH+CAfiJXSiuYgN0KLKQFg0HHWR2DwcjGYkcbmhoZcWsaOWOqq4kihN1l7wX91UoRxxKKTQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
-      '@gitbeaker/core': 38.11.0
-      '@gitbeaker/requester-utils': 38.11.0
+      '@gitbeaker/core': 38.12.1
+      '@gitbeaker/requester-utils': 38.12.1
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
@@ -398,18 +401,16 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@octokit/auth-token@3.0.3:
-    resolution: {integrity: sha512-/aFM2M4HVDBT/jjDBa84sJniv1t9Gm/rLkalaz9htOm+L+8JMj1k9w0CkUdcxNyNxZPlTxKPVko+m1VlM58ZVA==}
+  /@octokit/auth-token@3.0.4:
+    resolution: {integrity: sha512-TWFX7cZF2LXoCvdmJWY7XVPi74aSY0+FfBZNSXEXFkMpjcqsQwDSYVv5FhRFaI0V1ECnwbz4j59T/G+rXNWaIQ==}
     engines: {node: '>= 14'}
-    dependencies:
-      '@octokit/types': 9.2.3
     dev: true
 
   /@octokit/core@4.2.1:
     resolution: {integrity: sha512-tEDxFx8E38zF3gT7sSMDrT1tGumDgsw5yPG6BBh/X+5ClIQfMH/Yqocxz1PnHx6CHyF6pxmovUTOfZAUvQ0Lvw==}
     engines: {node: '>= 14'}
     dependencies:
-      '@octokit/auth-token': 3.0.3
+      '@octokit/auth-token': 3.0.4
       '@octokit/graphql': 5.0.6
       '@octokit/request': 6.2.5
       '@octokit/request-error': 3.0.3
@@ -980,7 +981,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001495
-      electron-to-chromium: 1.4.421
+      electron-to-chromium: 1.4.423
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
     dev: true
@@ -1281,8 +1282,8 @@ packages:
       readable-stream: 2.3.8
     dev: true
 
-  /electron-to-chromium@1.4.421:
-    resolution: {integrity: sha512-wZOyn3s/aQOtLGAwXMZfteQPN68kgls2wDAnYOA8kCjBvKVrW5RwmWVspxJYTqrcN7Y263XJVsC66VCIGzDO3g==}
+  /electron-to-chromium@1.4.423:
+    resolution: {integrity: sha512-y4A7YfQcDGPAeSWM1IuoWzXpg9RY1nwHzHSwRtCSQFp9FgAVDgdWlFf0RbdWfLWQ2WUI+bddUgk5RgTjqRE6FQ==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2283,6 +2284,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /moment@2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -2896,8 +2901,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup@3.23.1:
-    resolution: {integrity: sha512-ybRdFVHOoljGEFILHLd2g/qateqUdjE6YS41WXq4p3C/WwD3xtWxV4FYWETA1u9TeXQc5K8L8zHE5d/scOvrOQ==}
+  /rollup@3.24.0:
+    resolution: {integrity: sha512-OgraHOIg2YpHQTjl0/ymWfFNBEyPucB7lmhXrQUh38qNOegxLapSPFs9sNr0qKR75awW41D93XafoR2QfhBdUQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -3413,7 +3418,7 @@ packages:
       '@types/node': 18.16.16
       esbuild: 0.17.19
       postcss: 8.4.24
-      rollup: 3.23.1
+      rollup: 3.24.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

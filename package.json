@@ -9,8 +9,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@gitbeaker/rest": "^38.11.0",
-    "@logseq/libs": "^0.0.14"
+    "@gitbeaker/rest": "^38.12.1",
+    "@logseq/libs": "^0.0.14",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",

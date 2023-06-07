@@ -1,39 +1,68 @@
 import "@logseq/libs";
+import moment from "moment";
 import { Gitlab } from "@gitbeaker/rest";
 import { settings } from './settings';
 import { ExpandedUserSchema } from "@gitbeaker/rest";
 
 function main() {
-  logseq.UI.showMsg(`Hello from Ben`)
-
   logseq.useSettingsSchema(settings);
 
-  logseq.Editor.registerSlashCommand('Update Gitlab Entry', (_) => { return updateGitlabEntry();})
+  logseq.Editor.registerSlashCommand('Update Gitlab Entry', () => { return updateGitlabEntry();})
 }
 
 async function updateGitlabEntry() {
   try {
+    const blockValues = new Array<string>();
     const glApi = new Gitlab({
       host: logseq.settings?.host,
       token: logseq.settings?.token,
     });
     const currentGlUser:ExpandedUserSchema = await glApi.Users.showCurrentUser()
-    console.log(currentGlUser)
     const currentBlock = await logseq.Editor.getCurrentBlock();
-
-    const value = currentBlock?.content;
-    const uuid = currentBlock?.uuid;
-    const currentPage = await logseq.Editor.getCurrentPage();
-
-    console.log(currentPage?.journalDay)
-    const followedUsers = await glApi.Users.allFollowing(currentGlUser.id)
-    console.log(followedUsers)
-    const firstFollowedUsersEvents = await glApi.Events.all({
-      userId: followedUsers[5].id,
-      before: "2023-06-07",
-      after: "2023-06-05",
-    })
-    console.log(firstFollowedUsersEvents)
+    if (currentBlock) {
+      const currentPage = await logseq.Editor.getPage(currentBlock.page.id);
+      if (currentPage) {
+        console.log(`current page: ${currentPage.journalDay}`)
+        await logseq.Editor.updateBlock(currentBlock.uuid, "Appending Gitlab Followed User Events...")
+        const targetDate = moment(`${currentPage.journalDay}`, "YYYYMMDD")
+        console.log(targetDate.format())
+        const beforeDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").add(1, 'days')
+        const afterDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").subtract(1, 'days')
+        console.log(`${afterDate.format("YYYY-MM-DD")} - ${beforeDate.format("YYYY-MM-DD")}`)
+        const followedUsers = await glApi.Users.allFollowing(currentGlUser.id)
+        for await (const user of followedUsers) {
+          //console.log(user)
+          const events = await glApi.Events.all({
+            userId: user.id,
+            before: beforeDate.format("YYYY-MM-DD"),
+            after: afterDate.format("YYYY-MM-DD"),
+          })
+          events.forEach(async function (event) {
+            //console.log(event)
+            const project = await glApi.Projects.show(event.project_id)
+            let value = ''
+            if (event.target_type) {
+              value = `[[${event.author.name}]] participated in [[${project.path_with_namespace}]]`
+            } else if (event.push_data) {
+              // @ts-ignore
+              value = `[[${event.author.name}]] contributed to [[${project.path_with_namespace}]]`
+            }
+            if (!blockValues.includes(value)){
+              blockValues.push(value)
+            }
+          })
+        }
+        console.log(blockValues)
+        for await (const value of blockValues){
+          console.log(value)
+          await logseq.Editor.insertBlock(
+            currentBlock.uuid,
+            value,
+          )
+        }
+        await logseq.Editor.updateBlock(currentBlock.uuid, "Gitlab Followed User Events")
+      }
+    }
   }
   catch (e) {
     if (e instanceof Error) {
@@ -41,6 +70,5 @@ async function updateGitlabEntry() {
     }
   }
 }
-
 
 logseq.ready(main).catch(console.error);
