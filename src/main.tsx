@@ -22,23 +22,17 @@ async function updateGitlabEntry() {
     if (currentBlock) {
       const currentPage = await logseq.Editor.getPage(currentBlock.page.id);
       if (currentPage) {
-        console.log(`current page: ${currentPage.journalDay}`)
         await logseq.Editor.updateBlock(currentBlock.uuid, "Appending Gitlab Followed User Events...")
-        const targetDate = moment(`${currentPage.journalDay}`, "YYYYMMDD")
-        console.log(targetDate.format())
         const beforeDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").add(1, 'days')
         const afterDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").subtract(1, 'days')
-        console.log(`${afterDate.format("YYYY-MM-DD")} - ${beforeDate.format("YYYY-MM-DD")}`)
         const followedUsers = await glApi.Users.allFollowing(currentGlUser.id)
         for await (const user of followedUsers) {
-          //console.log(user)
           const events = await glApi.Events.all({
             userId: user.id,
             before: beforeDate.format("YYYY-MM-DD"),
             after: afterDate.format("YYYY-MM-DD"),
           })
           events.forEach(async function (event) {
-            //console.log(event)
             const project = await glApi.Projects.show(event.project_id)
             let value = ''
             if (event.target_type) {
@@ -52,9 +46,7 @@ async function updateGitlabEntry() {
             }
           })
         }
-        console.log(blockValues)
         for await (const value of blockValues){
-          console.log(value)
           await logseq.Editor.insertBlock(
             currentBlock.uuid,
             value,
