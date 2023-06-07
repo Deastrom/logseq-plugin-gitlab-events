@@ -38,7 +38,6 @@ async function updateGitlabEntry() {
             if (event.target_type) {
               value = `[[${event.author.name}]] participated in [[${project.path_with_namespace}]]`
             } else if (event.push_data) {
-              // @ts-ignore
               value = `[[${event.author.name}]] contributed to [[${project.path_with_namespace}]]`
             }
             if (!blockValues.includes(value)){
