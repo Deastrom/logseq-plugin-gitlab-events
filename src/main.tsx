@@ -40,7 +40,7 @@ async function updateGitlabEntry() {
             } else if (event.push_data) {
               value = `[[${event.author.name}]] contributed to [[${project.path_with_namespace}]]`
             }
-            if (!blockValues.includes(value)){
+            if (value != '' && !blockValues.includes(value)){
               blockValues.push(value)
             }
           })
