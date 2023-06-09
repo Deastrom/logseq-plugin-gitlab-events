@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "dist/index.html",
   "scripts": {
-    "dev": "vite",
+    "dev": "echo 'dont vite dev server'",
     "build": "tsc && vite build",
     "preinstall": "npx only-allow pnpm"
   },
