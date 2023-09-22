@@ -30,6 +30,7 @@ async function updateGitlabEntry() {
           const beforeDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").add(1, 'days')
           const afterDate = moment(`${currentPage.journalDay}`, "YYYYMMDD").subtract(1, 'days')
           const followedUsers = await glApi.Users.allFollowing(currentGlUser.id)
+          followedUsers.push(currentGlUser)
           for (const user of followedUsers) {
             const events = await glApi.Events.all({
               userId: user.id,
