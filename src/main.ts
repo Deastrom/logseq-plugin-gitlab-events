@@ -41,9 +41,9 @@ async function updateGitlabEntry() {
               const project = await glApi.Projects.show(event.project_id)
               let value = ''
               if (event.target_type) {
-                value = `[[${event.author.name}]] participated in [[${project.path_with_namespace}]]`
+                value = `[[${event.author.name}]] participated in [[${project.path_with_namespace}]] [^](${project.web_url})`
               } else if (event.push_data) {
-                value = `[[${event.author.name}]] contributed to [[${project.path_with_namespace}]]`
+                value = `[[${event.author.name}]] contributed to [[${project.path_with_namespace}]] [^](${project.web_url})`
               }
               if (value != '' && !blockValues.includes(value)){
                 blockValues.push(value)
